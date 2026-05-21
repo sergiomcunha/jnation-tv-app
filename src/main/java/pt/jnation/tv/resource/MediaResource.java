@@ -17,11 +17,14 @@ public class MediaResource {
     @Inject
     AppConfig appConfig;
 
+    private static final java.util.regex.Pattern IMAGE_EXT = java.util.regex.Pattern.compile("(?i).*\\.(jpg|jpeg|png|gif|webp|svg)$");
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Blocking
     public TemplateInstance get() {
-        return Templates.media(appConfig.media().get("default").next().toString());
+        String url = appConfig.media().get("default").next().toString();
+        return Templates.media(url, IMAGE_EXT.matcher(url).matches());
     }
 
     @GET
@@ -29,12 +32,13 @@ public class MediaResource {
     @Produces(MediaType.TEXT_HTML)
     @Blocking
     public TemplateInstance get(@PathParam("type") final String type) {
-        return Templates.media(appConfig.media().get(type).next().toString());
+        String url = appConfig.media().get(type).next().toString();
+        return Templates.media(url, IMAGE_EXT.matcher(url).matches());
     }
 
     @CheckedTemplate
     public static class Templates {
         @Location("media.html")
-        public static native TemplateInstance media(String url);
+        public static native TemplateInstance media(String url, boolean isImage);
     }
 }
