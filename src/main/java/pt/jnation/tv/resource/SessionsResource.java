@@ -53,7 +53,7 @@ public class SessionsResource {
 
         List<Session> sessions = getSessions(now);
         if (sessions.isEmpty()) {
-            return ErrorTemplate.error("No more Sessions for Today!");
+            return EmptyTemplate.empty();
         }
 
         return Templates.sessions(sessions);
