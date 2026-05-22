@@ -57,7 +57,7 @@ public class RoomsResource {
             RoomConfig roomConfig = appConfig.findRoom(name);
             return Templates.sessionCard(session.getSession(), roomConfig);
         } else {
-            return ErrorTemplate.error(session.getError());
+            return EmptyTemplate.empty();
         }
     }
 
