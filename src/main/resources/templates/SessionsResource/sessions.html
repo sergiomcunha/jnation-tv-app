@@ -17,43 +17,71 @@
         }
         h1 {
             font-size: 28pt;
+            margin: 0;
         }
         h3 {
             font-size: 20pt;
+            margin: 0;
         }
         span {
             margin-right: 5px;
         }
         .session {
             width: 100%;
-            height: 100%;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
             text-align: left;
+            display: flex;
+            align-items: stretch;
         }
         .title {
             width: 43%;
-            height: 100%;
             padding-left: 2%;
             padding-right: 2%;
             display: flex;
             align-items: center;
-            float: left
         }
         .room {
             width: 20%;
-            height: 100%;
             display: flex;
             align-items: center;
-            float: left
         }
         .speakers {
             width: 28%;
-            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            overflow: hidden;
+            padding: 12px 0;
+            box-sizing: border-box;
+        }
+        .speaker-item {
             display: flex;
             align-items: center;
+            gap: 12px;
+            min-height: 0;
         }
         img {
-            max-width: 20%;
+            width: clamp(40px, 4vw, 70px);
+            height: clamp(40px, 4vw, 70px);
             border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        /* Compact layout for 4+ speakers */
+        .speakers:has(.speaker-item:nth-child(4)) {
+            gap: 2px;
+            padding: 6px 0;
+            justify-content: space-evenly;
+        }
+        .speakers:has(.speaker-item:nth-child(4)) img {
+            width: 28px;
+            height: 28px;
+        }
+        .speakers:has(.speaker-item:nth-child(4)) h3 {
+            font-size: 13pt;
         }
     </style>
 </head>
@@ -71,16 +99,11 @@
         </div>
         <div class="speakers">
             {#for speaker in session.speakers}
-                <img style="margin-right: 20px" src="{speaker.profilePicture}" alt="">
+                <div class="speaker-item">
+                    <img src="{speaker.profilePicture}" alt="">
+                    <h3>{speaker.fullName}</h3>
+                </div>
             {/for}
-            <div>
-                <h3>
-                    {#for speaker in session.speakers}
-                        {speaker.fullName}
-                        {#if speaker_hasNext} <br><br> {/if}
-                    {/for}
-                </h3>
-            </div>
         </div>
     </div>
     {/for}
